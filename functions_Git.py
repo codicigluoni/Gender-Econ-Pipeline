@@ -25,10 +25,10 @@ def yr_interval(data_stud,data_accademic):
 		Years.append(min(list_intersection))
 		#the year that is the nearest from the value that lies exactly in the middle between the most recent year and the less recent year
 		Years.append(min(list_intersection, key=lambda x:abs(x-(int(min(list_intersection) + (max(list_intersection)-min(list_intersection))/2)))))
-	if i == 2: #only two years available 
+	if i == 2 or (i>=2 and req_yr==2): #only two years available 
 		Years.append(max(list_intersection))
 		Years.append(min(list_intersection))
-	if i == 1: #only one year available 
+	if i == 1 or (i>=1 and req_yr==1): #only one year available 
 		Years.append(max(list_intersection))
 	if i == 0: #no years available
 		print('Data not available')
@@ -41,6 +41,9 @@ def yr_interval(data_stud,data_accademic):
 def pl0t_th1s_gr4ph(pg_stud_matrix, pg_staff_matrix, n_yr, Years):
 
 	x = [1, 2, 3, 4, 5] #number of element in the x axis
+	CB_color_cycle = ['#377eb8', '#ff7f00', '#4daf4a','#f781bf', '#a65628', '#984ea3','#999999', '#e41a1c', '#dede00'] #list of colors to make graph color blind friendly
+
+	linestyle_str=[(0, (5, 10)),(0, (5, 5)),(0, (5, 1))] #linestyle for all years except the most recent one, which is displayed solid
 
 	#following, the process to construct the matrix containing the percentage values previously calculated.
 	#every row of the y matrix corresponds to an year for which the percentages have been calculated and each of those rows is plotted.
@@ -48,19 +51,24 @@ def pl0t_th1s_gr4ph(pg_stud_matrix, pg_staff_matrix, n_yr, Years):
 	for j in range(n_yr):
 		if j == 0: #if this is the first year to be plotted, build the y axis matrix, which contains all the percentages calculated before
 			y = [pg_stud_matrix[j][1], pg_stud_matrix[j][2], pg_staff_matrix[j][1], pg_staff_matrix[j][2], pg_staff_matrix[j][3]]
-			plt.plot(x,y)
-		else: #stack every "row year" in the matrix
+			plt.plot(x,y, color=CB_color_cycle[j], linestyle=linestyle_str[j], marker=".")
+		elif j != n_yr-1: #stack every "row year" in the matrix
 			row = [pg_stud_matrix[j][1], pg_stud_matrix[j][2], pg_staff_matrix[j][1], pg_staff_matrix[j][2], pg_staff_matrix[j][3]]
 			y = np.vstack([y,row])
-			plt.plot(x,y[j])
+			plt.plot(x,y[j], color=CB_color_cycle[j], linestyle=linestyle_str[j], marker=".")
+		elif j == n_yr-1: #custom formatting for the most recent year
+			row = [pg_stud_matrix[j][1], pg_stud_matrix[j][2], pg_staff_matrix[j][1], pg_staff_matrix[j][2], pg_staff_matrix[j][3]]
+			y = np.vstack([y,row])
+			plt.plot(x,y[j], color=CB_color_cycle[j], marker=".")
 
-	labels = ['Triennale', 'Magistrale', 'Ricercatore', 'P. Associato', 'P. Ordinario'] #define x values name
+	labels = ['Triennale', 'Magistrale', 'Ricercatrici', 'P. Associate', 'P. Ordinarie'] #define x values name
 
 	plt.title("Leaky Pipeline")
 	plt.ylabel("Presenza femminile in %")
 	plt.legend([Years[k] for k in range(n_yr)]) #display the legend referring to the years of interest
-	plt.grid()
+	plt.grid() #add a grid on the graph background
 	plt.xticks (x, labels) #rename x values
+	plt.ylim(bottom=0) #make the graph start from 0 on y axis
 
 	plt.gcf().set_size_inches(12, 6) #set graph size 
 	plt.savefig('graph.png', bbox_inches='tight', dpi=200) #save graph

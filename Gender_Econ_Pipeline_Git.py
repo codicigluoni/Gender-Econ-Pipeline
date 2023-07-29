@@ -5,21 +5,24 @@ import requests
 import pandas as pd 
 import numpy as np
 import os 
-from functions import *
+from functions_Git import *
+from csv import writer
+
+#<!!! The following code is intended to be interpreted carefully reading the README.md file at https://github.com/codicigluoni/Gender-Econ-Pipeline !!!>#
 
 ########################### First Sector: Enviroment Set Up ###########################
 
 # Academic Staff, retrieving data from database
-response = requests.get('http://dati.ustat.miur.it/api/3/action/datastore_search?resource_id=92f2008d-958f-4e9c-ae5c-7a3dd418cd57&filters={%22AREA_SD%22:%2213%20-%20Scienze%20economiche%20e%20statistiche%22,%20%22CODICE_ATENEO%22:%22TTTTT%22}&limit=500')
-response_json = json.loads(response.text)
-data_accademic = response_json['result']['records'] #saving data for academics
+response = requests.get('http://dati.ustat.miur.it/api/3/action/datastore_search?resource_id=92f2008d-958f-4e9c-ae5c-7a3dd418cd57&filters={%22AREA_SD%22:%2213%20-%20Scienze%20economiche%20e%20statistiche%22,%20%22CODICE_ATENEO%22:%22TTTTT%22}&limit=10000')
+staff_response_json = json.loads(response.text)
+data_academic = staff_response_json['result']['records'] #saving data for academics discarding non necessary information
 
 # Studenti , retrieving data from database
 stud_response = requests.get('http://dati.ustat.miur.it/api/3/action/datastore_search?resource_id=373294ff-b051-4ec1-996f-e52078640279&filters={%22ClasseNUMERO%22:[%22L-33%22,%22LM-56%22]}&limit=10000')
 stud_response_json = json.loads(stud_response.text)
-data_stud = stud_response_json['result']['records'] #saving data for students
+data_stud = stud_response_json['result']['records'] #saving data for students discarding non necessary information
 
-Years = yr_interval(data_stud, data_accademic) #function to extract year for which to analyze data
+Years = yr_interval(data_stud, data_academic) #function to extract year for which to analyze data
 
 ########################### Second Sector: Previous analysis check ###########################
 
@@ -62,7 +65,7 @@ if isExist and flag == 0 or not isExist: #if file exists and evaluated years are
 		tot_ord = 0
 		tot_ord_f = 0
 
-		for staff in data_accademic: #for each element in the database
+		for staff in data_academic: #for each element in the database
 			if staff['ANNO'] == yr:
 				if staff['COD_QUALIFICA'] == '1PO':
 					tot_ord = tot_ord + staff['N_AcStaff'] #calculating total number of Ordinary Professors in our field of interest
@@ -118,6 +121,24 @@ if isExist and flag == 0 or not isExist: #if file exists and evaluated years are
 		pg_stud_matrix[i][1] = (tot_trien_f/tot_trien)*100
 		pg_stud_matrix[i][2] = (tot_mag_f/tot_mag)*100
 		i = i + 1
+
+	#Saving data as csv
+
+	fmt='%d','%1.3f','%1.3f','%1.3f','%1.3f','%1.3f' #format required for years and percentages in data_merge
+	header_stud = ['Anno','Triennale	', 'Magistrale	', 'Ricercatrice', 'P. Associate', 'P. Ordinarie'] #create header
+	pg_staff_matrix_merge = np.delete(pg_staff_matrix, 0, 1) #delete the year column since in the merge only one is required and it is contained in pg_stud_matrix
+	data_merge= np.hstack((pg_stud_matrix,pg_staff_matrix_merge)) #merge the percentages matrix
+	np.savetxt('data.csv', data_merge, delimiter=',', fmt=fmt) #save percentages as csv
+	np.savetxt('fulldata.csv', [header_stud] ,delimiter=',',fmt="%s") #save header as csv
+
+	with open('data.csv', 'r') as f1: 
+		original = f1.read()
+
+	with open('fulldata.csv', 'a') as f2:
+		f2.write('\n')
+		f2.write(original) #merge
+
+	os.remove('data.csv') #delete the auxiliary file data.csv, now data with header are fully stored in fulldata.csv
 
 ########################### Fourth Sector: Grafic Plot ###########################
 
