@@ -2,17 +2,17 @@
 Gendere Econ Pipeline è un progetto che coinvolge tecniche di programmazione e interpretazione dati con l'obiettivo di visualizzare graficamente la percentuale di donne nei vari livelli di carriera studentesca e accademica in ambito economico-statistico.
 
 ## Introduzione 
-Tramite l'interrogazione di banche dati [USTAT](http://ustat.miur.it/) (Ufficio Statistico - Ministero dell'Università e della Ricerca) e l'utilizzo di librerie Python, tra cui [Matplotlib](https://matplotlib.org/), il codice in questione elabora per gli anni richiesti la percentuale di donne per sei livelli di carriera studentesca e accademica: Laurea Triennale, Laurea Magistrale, Dottorato, Ricercatore, Professore Associato, Professore Ordinario.
+Tramite l'interrogazione di banche dati [USTAT](http://ustat.miur.it/) (Ufficio Statistico - Ministero dell'Università e della Ricerca) e l'utilizzo di librerie Python, tra cui [Matplotlib](https://matplotlib.org/), il codice in questione elabora per gli anni richiesti la percentuale di donne per sei livelli di carriera studentesca e accademica: Laurea Triennale, Laurea Magistrale, Dottorato, Ricercatrice, Professoressa Associata, Professoressa Ordinaria.
 Le percentuali calcolate vengono disposte su un grafico in cui l'asse x rappresenta i livelli di carriera e l'asse y il livello precentuale, con una linea che intersechi questi valori per ogni anno preso in considerazione.
 Il grafico assemblato viene poi mostrato sulla pagina relativa alla Commissione di Genere della Società Italiana di Economia [(SIE)](https://www.siecon.org/it/chi-siamo/organizzazione/commissioni/commissione-di-genere/dati).<br />
 Di seguito un esempio: ---------------------- *[Cambiare Immagine]* <br/>
 <p align="center">
-<img src="https://github.com/codicigluoni/Gender-Econ-Pipeline/assets/45213049/55210b8e-01bb-4c31-94a1-a175c609ac1d" width=50% height=50%>
+<img src="https://github.com/codicigluoni/Gender-Econ-Pipeline/assets/45213049/d3afe73d-6d1a-4090-b729-f33e4f39ac32" width=50% height=50%>
 </p>
 
 ## Risorse
 Come appena anticipato, i dati necessari al progetto vengono estratti da banche dati USTAT, in particolare dalla sezione [Open Data](https://ustat.miur.it/opendata) -> Università e, rispettivamente per carriera studentesca e accademica, -> Studenti o -> Personale.
-I campi necessari all'elaborazione in questione,con suddivisione per categoria di analisi e link al database, sono:
+I campi necessari all'elaborazione in questione, con suddivisione per categoria di analisi e link al database, sono:
 - [Studenti](http://dati.ustat.miur.it/dataset/iscritti/resource/373294ff-b051-4ec1-996f-e52078640279?filters=ClasseNUMERO%3AL-33%7CClasseNUMERO%3ALM-56): Anno, Genere (maschile/femminile), Classe di Laurea (Triennale/Magistrale e Tipo di Corso), Numero Iscritti;
 * [Personale Accademico](http://dati.ustat.miur.it/dataset/dati-per-bilancio-di-genere/resource/92f2008d-958f-4e9c-ae5c-7a3dd418cd57?filters=AREA_SD%3A13%20-%20Scienze%20economiche%20e%20statistiche%7CAREA_GEO%3AITALIA): Anno, Genere (maschile/femminile), Area Scientifico Disciplinare (Scienze economiche e statistiche), Codice Ateneo (Aggregato o Singolo), Qualifica (Ricercatore/P. Associato/P. Ordinario), Numero Personale Attivo;
 + Dottorandi: 
@@ -25,7 +25,7 @@ Il codice, contenuto per la maggior parte nel file [Gender_Econ_Pipeline_Git.py]
 4. Graphic Plot <br/>
 
 Inoltre, per semplice questione di ordine, due funzioni sono definite in un file esterno, nominato [functions_Git.py](https://github.com/codicigluoni/Gender-Econ-Pipeline/blob/main/functions_Git.py).<br/>
-Fondamentali per il funzionamento del codice sono i due file generati una volta che questo viene eseguito: [graph.png](https://github.com/codicigluoni/Gender-Econ-Pipeline/blob/main/graph.png) e [years.csv](https://github.com/codicigluoni/Gender-Econ-Pipeline/blob/main/years.csv) (in questa repository sono presenti due esempi *[Da sostituire quando codice viene aggiornato]* ).
+Fondamentali per il funzionamento del codice sono i due file generati una volta che questo viene eseguito: [graph.png](https://github.com/codicigluoni/Gender-Econ-Pipeline/blob/main/graph.png) e [years.csv](https://github.com/codicigluoni/Gender-Econ-Pipeline/blob/main/years.csv) (in questa repository sono presenti due esempi *[Da sostituire quando codice viene aggiornato]* ). Viene inoltre salvato il file ```fulldata.csv``` contenente i livelli percentuali mostrati nel grafico.
 
 ### Enviroment Set Up
 Nella prima parte del codice vengono fatte due richieste JSON all'API dei database USTAT: il [database relativo al personale accademico](http://dati.ustat.miur.it/api/3/action/datastore_search?resource_id=92f2008d-958f-4e9c-ae5c-7a3dd418cd57) viene filtrato secondo Area Scientifico Disciplinare, ```AREA_SD```, (13 - Scienze economiche e statistiche) e Codice Ateneo, ```CODICE_ATENEO```, (TTTTT, che rappresenta il dato aggregato), mentre il [database relativo agli studenti](http://dati.ustat.miur.it/api/3/action/datastore_search?resource_id=373294ff-b051-4ec1-996f-e52078640279) viene filtrato secondo le classi di laurea,```ClasseNUMERO```, (L-33, laurea triennale in scienze economiche e statistiche. ed L-56, laurea magistrale in scienze economiche), ponendo come numero limite di risultati ```limit=10000``` per non incorrere nel rischio di scartare elementi di interesse. I dati estratti vengono salvati rispettivamente in ```data_academic``` e ```data_stud```. <br/>
@@ -40,5 +40,26 @@ La seconda sezione consiste essenzialmente nel controllo che i dati per gli anni
 <br/>
 Ogni volta che il codice viene completamente eseguito viene creato il file [years.csv](https://github.com/codicigluoni/Gender-Econ-Pipeline/blob/main/years.csv) contenente gli anni per cui i dati sono stati elaborati: nel caso in cui il file non sia presente oppure se gli anni calcolati nella sezione precedente e contenuti in ```Years``` fossero diversi da quelli presenti in ```years.csv``` il codice viene eseguito nel suo intero. Se gli anni corrispondono, l'esecuzione del codice termina.
 ### Data Analysis
+Nel caso in cui fosse la prima volta che il codice viene eseguito, e quindi ```years.csv``` risultasse inesistente, oppure fossero disponibili nuovi anni da analizzare, il codice inizia ad analizzare i dati e i nuovi anni che verranno analizzati vengono salvati in un file csv nominato ```years.csv```, andando eventualmente a sostiture il file vecchio.<br/>
+Per ogni categoria d'interesse viene quindi calcolato il numero totale per ogni anno e il numero di individui di genere femminile per ogni anno, così da poter calcolare le percentuali. Queste, per studenti e personale accademico, vengono salvate rispettivamente in ```pg_stud_matrix``` e ```pg_staff_matrix```, matrici a due dimensioni dalla forma:
+<p>
+<img src="https://github.com/codicigluoni/Gender-Econ-Pipeline/assets/45213049/609a1d0e-c161-4b36-8300-aa125b70ffc8" width=22% height=22%>
+<img src="https://github.com/codicigluoni/Gender-Econ-Pipeline/assets/45213049/32c0d439-1e0c-4f1a-a203-68474a17e80d" width=30% height=30%> 
+</p> <br/>
+
+Il significato della notazione %f_"categoria"<sub>n</sub> nelle matrici è: percentuale di presenza femminile nella categoria in questione nell'anno n.
+Le percentuali calcolate vengono quindi passate alla funzione ```pl0t_th1s_gr4ph()```, la quale verrà approfondita nella prossima sezione, e vengono unite per essere salvati come file excel in ```fulldata.csv```.
+
 ### Graphic Plot
+In conclusione viene chiamata la funzione esterna ```pl0t_th1s_gr4ph()```, definita nel file [functions_Git.py](https://github.com/codicigluoni/Gender-Econ-Pipeline/blob/main/functions_Git.py), che tramite la libreria [Matplotlib](https://matplotlib.org/) ha il compito  di generare un grafico partendo dalle percentuali calcolate. Per una futura modifica del grafico si consiglia la consultazione della [Guida Utenti](https://matplotlib.org/stable/users/index) e la ricerca di esempi su [Stack Overflow](https://stackoverflow.com/questions/tagged/matplotlib): per esempio, gli stili per le linee sono ben consultabili [qui](https://stackoverflow.com/questions/13359951/is-there-a-list-of-line-styles-in-matplotlib).<br/>
+Il ciclo ```for``` viene quindi utilizzato per formare la lista di dati relativi all'asse y. Nel codice, ```y``` viene creata come un array (una sola riga) per poi aggiungere tramite ```np.vstack()``` tante righe quanti sono gli anni analizzati. Questa struttura è stata creata in modo che il codice possa essere dinamico e quindi poter rappresentare diversi numeri di anni semplicemente modificando ```req_yr``` come spiegato [in precedenza](https://github.com/codicigluoni/Gender-Econ-Pipeline/edit/main/README.md#enviroment-set-up). È importante notare che nel caso in cui si volesse rappresentare un numero di anni maggiore di 4, sarà necessario premurarsi che i vettori contenenti gli stili e i colori per le linee, rispettivamente ```CB_color_cycle``` e ```linestyle_str```, siano abbastanza popolati da poter supportare il numero di anni richiesto: in altre parole, se la rappresentazione dovrà contenere i dati per 7 anni, allora i vettori appena citati dovranno avere rispettivamente 7 e 6 elementi (lo stile della linea rappresentante l'anno più recente è di default "solid" e non è specificato nel codice né incluso in ```linestyle_str```).<br/>
+Quando ```plt.plot(x,y[j]...``` viene eseguito, il primo elemento di ```x``` viene associato al primo elemento di ```y[j]``` e avanzando in questo senso viene composta la linea del grafico per l'anno in posizione ```j``` in ```Years```.
+Una volta terminato il ciclo for, ```y``` avrà la seguente forma:
+<p align="center">
+<img src="https://github.com/codicigluoni/Gender-Econ-Pipeline/assets/45213049/953f5349-9fc6-4212-9694-06b59b9dcd1a" width=40% height=40%>
+</p> <br/>
+
+Le ultime linee del codice fanno riferimento a specifiche del grafico, facilmente e liberamente modificabili leggendo direttamente i commenti del codice stesso.
+
+
 
