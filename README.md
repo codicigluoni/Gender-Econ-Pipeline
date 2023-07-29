@@ -5,9 +5,10 @@ Gendere Econ Pipeline è un progetto che coinvolge tecniche di programmazione e 
 Tramite l'interrogazione di banche dati [USTAT](http://ustat.miur.it/) (Ufficio Statistico - Ministero dell'Università e della Ricerca) e l'utilizzo di librerie Python, tra cui [Matplotlib](https://matplotlib.org/), il codice in questione elabora per gli anni richiesti la percentuale di donne per sei livelli di carriera studentesca e accademica: Laurea Triennale, Laurea Magistrale, Dottorato, Ricercatrice, Professoressa Associata, Professoressa Ordinaria.
 Le percentuali calcolate vengono disposte su un grafico in cui l'asse x rappresenta i livelli di carriera e l'asse y il livello precentuale, con una linea che intersechi questi valori per ogni anno preso in considerazione.
 Il grafico assemblato viene poi mostrato sulla pagina relativa alla Commissione di Genere della Società Italiana di Economia [(SIE)](https://www.siecon.org/it/chi-siamo/organizzazione/commissioni/commissione-di-genere/dati).<br />
+
 Di seguito un esempio: ---------------------- *[Cambiare Immagine]* <br/>
 <p align="center">
-<img src="https://github.com/codicigluoni/Gender-Econ-Pipeline/assets/45213049/d3afe73d-6d1a-4090-b729-f33e4f39ac32" width=50% height=50%>
+<img src="https://github.com/codicigluoni/Gender-Econ-Pipeline/assets/45213049/4b7400f6-d8d0-4dfe-a189-2f5a1e077d2a" width=50% height=50%>
 </p>
 
 ## Risorse
@@ -43,8 +44,8 @@ Ogni volta che il codice viene completamente eseguito viene creato il file [year
 Nel caso in cui fosse la prima volta che il codice viene eseguito, e quindi ```years.csv``` risultasse inesistente, oppure fossero disponibili nuovi anni da analizzare, il codice inizia ad analizzare i dati e i nuovi anni che verranno analizzati vengono salvati in un file csv nominato ```years.csv```, andando eventualmente a sostiture il file vecchio.<br/>
 Per ogni categoria d'interesse viene quindi calcolato il numero totale per ogni anno e il numero di individui di genere femminile per ogni anno, così da poter calcolare le percentuali. Queste, per studenti e personale accademico, vengono salvate rispettivamente in ```pg_stud_matrix``` e ```pg_staff_matrix```, matrici a due dimensioni dalla forma:
 <p>
-<img src="https://github.com/codicigluoni/Gender-Econ-Pipeline/assets/45213049/609a1d0e-c161-4b36-8300-aa125b70ffc8" width=22% height=22%>
-<img src="https://github.com/codicigluoni/Gender-Econ-Pipeline/assets/45213049/32c0d439-1e0c-4f1a-a203-68474a17e80d" width=30% height=30%> 
+<img src="https://github.com/codicigluoni/Gender-Econ-Pipeline/assets/45213049/ff5e91d3-f2ea-48f0-b3e6-e67bb04f29d0" width=22% height=22%>
+<img src="https://github.com/codicigluoni/Gender-Econ-Pipeline/assets/45213049/55f3e83b-63e1-41d1-b2fb-87cbb349dabc" width=30% height=30%> 
 </p> <br/>
 
 Il significato della notazione %f_"categoria"<sub>n</sub> nelle matrici è: percentuale di presenza femminile nella categoria in questione nell'anno n.
@@ -56,7 +57,7 @@ Il ciclo ```for``` viene quindi utilizzato per formare la lista di dati relativi
 Quando ```plt.plot(x,y[j]...``` viene eseguito, il primo elemento di ```x``` viene associato al primo elemento di ```y[j]``` e avanzando in questo senso viene composta la linea del grafico per l'anno in posizione ```j``` in ```Years```.
 Una volta terminato il ciclo for, ```y``` avrà la seguente forma:
 <p align="center">
-<img src="https://github.com/codicigluoni/Gender-Econ-Pipeline/assets/45213049/953f5349-9fc6-4212-9694-06b59b9dcd1a" width=40% height=40%>
+<img src="https://github.com/codicigluoni/Gender-Econ-Pipeline/assets/45213049/44910297-6530-49ec-b614-73471d67f543" width=40% height=40%>
 </p> <br/>
 
 Le ultime linee del codice fanno riferimento a specifiche del grafico, facilmente e liberamente modificabili leggendo direttamente i commenti del codice stesso.
