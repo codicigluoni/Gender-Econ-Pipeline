@@ -49,6 +49,7 @@ if isExist and flag == 0 or not isExist: #if file exists and evaluated years are
 	pd.DataFrame(Years, columns=['yr']).to_csv('years.csv') #save new analyzed years  
 
 	pg_staff_matrix = np.ones((n_yr,4)) #create matrix for female percentage regarding academic staff
+	abs_staff_matrix = np.ones((n_yr,4)) #create matrix for female absolute values regarding academic staff
 
 	i=0
 
@@ -80,15 +81,21 @@ if isExist and flag == 0 or not isExist: #if file exists and evaluated years are
 					if staff['GENERE'] == 'F':
 						tot_res_f = tot_res_f + staff['N_AcStaff'] #calculating total number of female Reasearchers
 
-		#calculating percentages and storing them in a matrix, a row for each year
+		#calculating percentages and absolute values and storing them in their matrixes, a row for each year
 
 		pg_staff_matrix[i][0] = yr
 		pg_staff_matrix[i][1] =  (tot_res_f/tot_res)*100
 		pg_staff_matrix[i][2] = (tot_assoc_f/tot_assoc)*100
 		pg_staff_matrix[i][3] = (tot_ord_f/tot_ord)*100
+
+		abs_staff_matrix[i][0] = yr
+		abs_staff_matrix[i][1] =  tot_res_f
+		abs_staff_matrix[i][2] = tot_assoc_f
+		abs_staff_matrix[i][3] = tot_ord_f
 		i = i + 1
 
 	pg_stud_matrix = np.ones((n_yr,3)) #create matrix for female percentage regarding students
+	abs_stud_matrix = np.ones((n_yr,3)) #create matrix for female absolute values regarding students
 
 	i=0
 
@@ -115,11 +122,15 @@ if isExist and flag == 0 or not isExist: #if file exists and evaluated years are
 					if stud['SESSO'] == 'F':
 						tot_mag_f = tot_mag_f + stud['Isc'] #calculating total number of female Master students
 
-		#calculating percentages and storing them in a matrix, a row for each year
+		#calculating percentages and absolute values and storing them in their matrixes, a row for each year
 
 		pg_stud_matrix[i][0] = yr
 		pg_stud_matrix[i][1] = (tot_trien_f/tot_trien)*100
 		pg_stud_matrix[i][2] = (tot_mag_f/tot_mag)*100
+
+		abs_stud_matrix[i][0] = yr
+		abs_stud_matrix[i][1] = tot_trien_f
+		abs_stud_matrix[i][2] = tot_mag_f
 		i = i + 1
 
 	#Saving data as csv
@@ -140,6 +151,24 @@ if isExist and flag == 0 or not isExist: #if file exists and evaluated years are
 
 	os.remove('data.csv') #delete the auxiliary file data.csv, now data with header are fully stored in fulldata.csv
 
+
+	fmt='%d','%d','%d','%d','%d','%d' #format required for years and absolute values in data_merge
+	header_stud = ['Anno','Triennale	', 'Magistrale	', 'Ricercatrice', 'P. Associate', 'P. Ordinarie'] #create header
+	abs_staff_matrix_merge = np.delete(abs_staff_matrix, 0, 1) #delete the year column since in the merge only one is required and it is contained in pg_stud_matrix
+	data_merge= np.hstack((abs_stud_matrix,abs_staff_matrix_merge)) #merge the absolute values matrix
+	np.savetxt('data.csv', data_merge, delimiter=',', fmt=fmt) #save absolute values as csv
+	np.savetxt('fulldata_abs.csv', [header_stud] ,delimiter=',',fmt="%s") #save header as csv
+
+	with open('data.csv', 'r') as f1: 
+		original = f1.read()
+
+	with open('fulldata_abs.csv', 'a') as f2:
+		f2.write('\n')
+		f2.write(original) #merge
+
+	os.remove('data.csv') #delete the auxiliary file data.csv, now data with header are fully stored in fulldata.csv
+
 ########################### Fourth Sector: Grafic Plot ###########################
 
-	pl0t_th1s_gr4ph(pg_stud_matrix, pg_staff_matrix, n_yr, Years)
+	pl0t_th1s_gr4ph_abs(abs_stud_matrix, abs_staff_matrix, n_yr, Years) #calling the function to plot absolute values graph
+	pl0t_th1s_gr4ph(pg_stud_matrix, pg_staff_matrix, n_yr, Years) #calling the function to plot percentage graph
