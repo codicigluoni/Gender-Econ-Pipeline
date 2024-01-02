@@ -82,11 +82,11 @@ def pl0t_th1s_gr4ph_abs(abs_stud_matrix, abs_staff_matrix, n_yr, Years):
 
 	linestyle_str=[(0, (5, 10)),(0, (5, 5)),(0, (5, 1))] #linestyle for all years except the most recent one, which is displayed solid
 
-	#following, the process to construct the matrix containing the percentage values previously calculated.
-	#every row of the y matrix corresponds to an year for which the percentages have been calculated and each of those rows is plotted.
+	#following, the process to construct the matrix containing the absolute values previously calculated.
+	#every row of the y matrix corresponds to an year for which the absolute value has been calculated and each of those rows is plotted.
 
 	for j in range(n_yr):
-		if j == 0: #if this is the first year to be plotted, build the y axis matrix, which contains all the percentages calculated before
+		if j == 0: #if this is the first year to be plotted, build the y axis matrix, which contains all the values calculated before
 			y = [abs_stud_matrix[j][1], abs_stud_matrix[j][2], abs_staff_matrix[j][1], abs_staff_matrix[j][2], abs_staff_matrix[j][3]]
 			plt.plot(x,y, color=CB_color_cycle[j], linestyle=linestyle_str[j], marker=".")
 		elif j != n_yr-1: #stack every "row year" in the matrix
