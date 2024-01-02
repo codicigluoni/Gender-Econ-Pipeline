@@ -154,7 +154,7 @@ if isExist and flag == 0 or not isExist: #if file exists and evaluated years are
 
 	fmt='%d','%d','%d','%d','%d','%d' #format required for years and absolute values in data_merge
 	header_stud = ['Anno','Triennale	', 'Magistrale	', 'Ricercatrice', 'P. Associate', 'P. Ordinarie'] #create header
-	abs_staff_matrix_merge = np.delete(abs_staff_matrix, 0, 1) #delete the year column since in the merge only one is required and it is contained in pg_stud_matrix
+	abs_staff_matrix_merge = np.delete(abs_staff_matrix, 0, 1) #delete the year column since in the merge only one is required and it is contained in abs_stud_matrix
 	data_merge= np.hstack((abs_stud_matrix,abs_staff_matrix_merge)) #merge the absolute values matrix
 	np.savetxt('data.csv', data_merge, delimiter=',', fmt=fmt) #save absolute values as csv
 	np.savetxt('fulldata_abs.csv', [header_stud] ,delimiter=',',fmt="%s") #save header as csv
