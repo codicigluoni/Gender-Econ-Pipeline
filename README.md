@@ -2,13 +2,14 @@
 Gendere Econ Pipeline è un progetto che coinvolge tecniche di programmazione e interpretazione dati con l'obiettivo di visualizzare graficamente la percentuale di donne nei vari livelli di carriera studentesca e accademica in ambito economico-statistico.
 
 ## Introduzione 
-Tramite l'interrogazione di banche dati [USTAT](http://ustat.miur.it/) (Ufficio Statistico - Ministero dell'Università e della Ricerca) e l'utilizzo di librerie Python, tra cui [Matplotlib](https://matplotlib.org/), il codice in questione elabora per gli anni richiesti la percentuale di donne per sei livelli di carriera studentesca e accademica: Laurea Triennale, Laurea Magistrale, Dottorato, Ricercatrice, Professoressa Associata, Professoressa Ordinaria.
+Tramite l'interrogazione di banche dati [USTAT](http://ustat.miur.it/) (Ufficio Statistico - Ministero dell'Università e della Ricerca) e l'utilizzo di librerie Python, tra cui [Matplotlib](https://matplotlib.org/), il codice in questione elabora per gli anni richiesti la percentuale di donne per sei livelli di carriera studentesca e accademica: Laurea Triennale, Laurea Magistrale, Dottorato (_Implementazione subordinata alla disponibilità prossima dei relativi dati_), Ricercatrice, Professoressa Associata, Professoressa Ordinaria.
 Le percentuali calcolate vengono disposte su un grafico in cui l'asse x rappresenta i livelli di carriera e l'asse y il livello precentuale, con una linea che intersechi questi valori per ogni anno preso in considerazione.
 Il grafico assemblato viene poi mostrato sulla pagina relativa alla Commissione di Genere della Società Italiana di Economia [(SIE)](https://www.siecon.org/it/chi-siamo/organizzazione/commissioni/commissione-di-genere/dati).<br />
 
 Di seguito un esempio: ---------------------- *[Cambiare Immagine]* <br/>
 <p align="center">
-<img src="https://github.com/codicigluoni/Gender-Econ-Pipeline/assets/45213049/4b7400f6-d8d0-4dfe-a189-2f5a1e077d2a" width=50% height=50%>
+<img src="https://github.com/codicigluoni/Gender-Econ-Pipeline/blob/12124f73edca7de522f44e5c00d1c1653ab4d177/graph.png" width=50% height=50%>
+<img src="https://github.com/codicigluoni/Gender-Econ-Pipeline/blob/12124f73edca7de522f44e5c00d1c1653ab4d177/graph.png" width=50% height=50%>
 </p>
 
 ## Risorse
