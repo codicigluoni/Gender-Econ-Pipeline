@@ -63,7 +63,7 @@ def pl0t_th1s_gr4ph(pg_stud_matrix, pg_staff_matrix, n_yr, Years):
 
 	labels = ['Triennale', 'Magistrale', 'Ricercatrici', 'P. Associate', 'P. Ordinarie'] #define x values name
 
-	plt.title("Leaky Pipeline")
+	plt.title("Leaky Pipeline in percentuale")
 	plt.ylabel("Presenza femminile in %")
 	plt.legend([Years[k] for k in range(n_yr)]) #display the legend referring to the years of interest
 	plt.grid() #add a grid on the graph background
@@ -72,3 +72,41 @@ def pl0t_th1s_gr4ph(pg_stud_matrix, pg_staff_matrix, n_yr, Years):
 
 	plt.gcf().set_size_inches(12, 6) #set graph size 
 	plt.savefig('graph.png', bbox_inches='tight', dpi=200) #save graph
+	plt.clf() #clear the graph
+
+
+def pl0t_th1s_gr4ph_abs(abs_stud_matrix, abs_staff_matrix, n_yr, Years):
+
+	x = [1, 2, 3, 4, 5] #number of element in the x axis
+	CB_color_cycle = ['#377eb8', '#ff7f00', '#4daf4a','#f781bf', '#a65628', '#984ea3','#999999', '#e41a1c', '#dede00'] #list of colors to make graph color blind friendly
+
+	linestyle_str=[(0, (5, 10)),(0, (5, 5)),(0, (5, 1))] #linestyle for all years except the most recent one, which is displayed solid
+
+	#following, the process to construct the matrix containing the percentage values previously calculated.
+	#every row of the y matrix corresponds to an year for which the percentages have been calculated and each of those rows is plotted.
+
+	for j in range(n_yr):
+		if j == 0: #if this is the first year to be plotted, build the y axis matrix, which contains all the percentages calculated before
+			y = [abs_stud_matrix[j][1], abs_stud_matrix[j][2], abs_staff_matrix[j][1], abs_staff_matrix[j][2], abs_staff_matrix[j][3]]
+			plt.plot(x,y, color=CB_color_cycle[j], linestyle=linestyle_str[j], marker=".")
+		elif j != n_yr-1: #stack every "row year" in the matrix
+			row = [abs_stud_matrix[j][1], abs_stud_matrix[j][2], abs_staff_matrix[j][1], abs_staff_matrix[j][2], abs_staff_matrix[j][3]]
+			y = np.vstack([y,row])
+			plt.plot(x,y[j], color=CB_color_cycle[j], linestyle=linestyle_str[j], marker=".")
+		elif j == n_yr-1: #custom formatting for the most recent year
+			row = [abs_stud_matrix[j][1], abs_stud_matrix[j][2], abs_staff_matrix[j][1], abs_staff_matrix[j][2], abs_staff_matrix[j][3]]
+			y = np.vstack([y,row])
+			plt.plot(x,y[j], color=CB_color_cycle[j], marker=".")
+
+	labels = ['Triennale', 'Magistrale', 'Ricercatrici', 'P. Associate', 'P. Ordinarie'] #define x values name
+
+	plt.title("Leaky Pipeline in valore assoluto")
+	plt.ylabel("Presenza femminile in valore assoluto")
+	plt.legend([Years[k] for k in range(n_yr)]) #display the legend referring to the years of interest
+	plt.grid() #add a grid on the graph background
+	plt.xticks (x, labels) #rename x values
+	plt.ylim(bottom=0) #make the graph start from 0 on y axis
+
+	plt.gcf().set_size_inches(12, 6) #set graph size 
+	plt.savefig('graph_abs.png', bbox_inches='tight', dpi=200) #save graph
+	plt.clf() #clear the graph
