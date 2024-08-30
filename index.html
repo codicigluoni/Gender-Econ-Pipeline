@@ -1,1 +1,105 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaky Pipeline in Economia</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+        }
+        .graph-container {
+            margin-bottom: 40px;
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .graph-container h2 {
+            color: #3498db;
+            margin-bottom: 15px;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            transition: transform 0.3s ease;
+        }
+        img:hover {
+            transform: scale(1.02);
+        }
+        .update-info {
+            text-align: center;
+            font-style: italic;
+            color: #7f8c8d;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #ecf0f1;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Leaky Pipeline in Economia</h1>
+        
+        <div class="graph-container">
+            <h2>Grafico in Percentuale</h2>
+            <img src="/graph.png" alt="Grafico Leaky Pipeline in percentuale" id="percentGraph">
+        </div>
 
+        <div class="graph-container">
+            <h2>Grafico in Valore Assoluto</h2>
+            <img src="/graph_abs.png" alt="Grafico Leaky Pipeline in valore assoluto" id="absGraph">
+        </div>
+
+        <p class="update-info">Ultimo aggiornamento: <span id="lastUpdate"></span></p>
+    </div>
+
+    <script>
+        function updateImages() {
+            const timestamp = new Date().getTime();
+            document.getElementById('percentGraph').src = `/graph.png?t=${timestamp}`;
+            document.getElementById('absGraph').src = `/graph_abs.png?t=${timestamp}`;
+            updateLastUpdateDate();
+        }
+
+        function updateLastUpdateDate() {
+            const now = new Date();
+            const formattedDate = now.toLocaleString('it-IT', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            document.getElementById('lastUpdate').textContent = formattedDate;
+        }
+
+        // Aggiorna le immagini e la data all'avvio della pagina
+        updateImages();
+
+        // Imposta l'aggiornamento automatico ogni 30 giorni (in millisecondi)
+        setInterval(updateImages, 30 * 24 * 60 * 60 * 1000);
+    </script>
+</body>
+</html>
