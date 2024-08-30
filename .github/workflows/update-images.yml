@@ -9,9 +9,11 @@ jobs:
   update-images:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: '3.x'
     - name: Install dependencies
@@ -21,9 +23,21 @@ jobs:
     - name: Run script and update images
       run: |
         python Gender_Econ_Pipeline_Git.py
+    - name: Check for changes
+      id: git-check
+      run: |
+        git status
+        git diff
     - name: Commit and push if changed
       run: |
         git config --global user.email "action@github.com"
         git config --global user.name "GitHub Action"
         git add graph.png graph_abs.png
-        git diff --quiet && git diff --staged --quiet || (git commit -m "Update images" && git push)
+        if git diff --staged --quiet; then
+          echo "No changes to commit"
+        else
+          git commit -m "Update images"
+          git push
+        fi
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
